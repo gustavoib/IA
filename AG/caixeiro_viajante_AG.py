@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
-# Define a matriz de distâncias
+# matriz de distâncias
 distancias_cidades = np.array([
     [ 0, 10, 15, 45,  5, 45, 50, 44, 30, 100, 67, 33, 90, 17, 50],
     [15,  0, 100, 30, 20, 25, 80, 45, 41,   5, 45, 10, 90, 10, 35],
@@ -21,7 +21,16 @@ distancias_cidades = np.array([
     [25, 70,  45, 50,  5, 45, 20, 100, 25,  50, 35, 10, 90,  5,  0]
 ])
 
-# parametros
+# matriz de distancias transposta para que a coluna represente a cidade de origem e a linha a cidade de destino
+distancias_cidades_transposta = np.transpose(distancias_cidades)
+
+'''
+os parametros TAM_POPULACAO, NUM_GERACOES e TX_MUTACAO são hiperparâmetros do algoritmo genético
+- TAM_POPULACAO: Tamanho da população
+- NUM_GERACOES: Número de gerações
+- TX_MUTACAO: Taxa de mutação
+'''
+
 TAM_POPULACAO = 100
 NUM_GERACOES = 1000
 TX_MUTACAO = 0.02
@@ -32,8 +41,8 @@ def gerar_populacao(tamanho, numero_cidades):
 def fitness(individuo):
     fitness = 0
     for i in range(1, len(individuo)):
-        fitness += distancias_cidades[individuo[i-1], individuo[i]]
-    fitness += distancias_cidades[individuo[-1], individuo[0]]
+        fitness += distancias_cidades_transposta[individuo[i-1], individuo[i]]
+    fitness += distancias_cidades_transposta[individuo[-1], individuo[0]]
     return fitness
 
 # seleção por torneio
@@ -61,7 +70,7 @@ def mutacao(rota):
         rota[i], rota[j] = rota[j], rota[i]
 
 def algoritmo_genetico():
-    numero_cidades = distancias_cidades.shape[0]
+    numero_cidades = distancias_cidades_transposta.shape[0]
     populacao = gerar_populacao(TAM_POPULACAO, numero_cidades)
     melhores_distancias = []
 
