@@ -33,7 +33,7 @@ os parametros TAM_POPULACAO, NUM_GERACOES e TX_MUTACAO são hiperparâmetros do 
 
 TAM_POPULACAO = 100
 NUM_GERACOES = 1000
-TX_MUTACAO = 0.02
+TX_MUTACAO = 0.1
 
 def gerar_populacao(tamanho, numero_cidades):
     return [random.sample(range(numero_cidades), numero_cidades) for _ in range(tamanho)]

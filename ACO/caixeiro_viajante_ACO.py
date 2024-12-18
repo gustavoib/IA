@@ -37,7 +37,7 @@ N_FORMIGAS = 15
 ALPHA = 1.0            
 BETA = 2.0              
 RHO = 0.5           
-Q = 10               
+Q = 100              
 MAX_ITERACOES = 1000     
 
 
@@ -46,10 +46,12 @@ def inicializar_aco(distancias):
     feromonios = np.ones((n_cidades, n_cidades)) / n_cidades
     visibilidade = 1 / (distancias + np.eye(n_cidades))  # evita divisão por zero
     np.fill_diagonal(visibilidade, 0)
+    
     return feromonios, visibilidade
 
 def construir_caminho(feromonios, visibilidade, alpha, beta, n_cidades):
     caminho = [random.randint(0, n_cidades - 1)]  # cidade inicial aleatória
+    
     while len(caminho) < n_cidades:
         cidade_atual = caminho[-1]
         probabilidades = calcular_probabilidades(cidade_atual, caminho, feromonios, visibilidade, alpha, beta)
@@ -58,24 +60,30 @@ def construir_caminho(feromonios, visibilidade, alpha, beta, n_cidades):
             probabilidades[caminho] = 0
         proxima_cidade = random.choices(range(n_cidades), weights=probabilidades, k=1)[0]
         caminho.append(proxima_cidade)
+    
     return caminho
 
 def calcular_probabilidades(cidade_atual, caminho, feromonios, visibilidade, alpha, beta):
     n_cidades = feromonios.shape[0]
     probabilidades = np.zeros(n_cidades)
+    
     for j in range(n_cidades):
         if j not in caminho:
             probabilidades[j] = (feromonios[cidade_atual, j] ** alpha) * (visibilidade[cidade_atual, j] ** beta)
     soma_probabilidades = np.sum(probabilidades)
+    
     if soma_probabilidades == 0:
         return probabilidades
+    
     return probabilidades / soma_probabilidades
 
 def calcular_custo(caminho, distancias):
     custo = 0
+    
     for i in range(len(caminho) - 1):
         custo += distancias[caminho[i], caminho[i + 1]]
     custo += distancias[caminho[-1], caminho[0]]  # retorno à cidade inicial
+    
     return custo
 
 def atualizar_feromonios(feromonios, caminhos, custos, rho, Q):
@@ -125,9 +133,6 @@ def algoritmo_colonia_de_formigas(distancias):
 
 # execução do algoritmo
 melhor_caminho, melhor_custo, melhores_custos = algoritmo_colonia_de_formigas(distancias_cidades_transposta)
-
-print(f"Melhor caminho: {melhor_caminho}")
-print(f"Custo do melhor caminho: {melhor_custo}")
 
 # Plotar a convergência
 plt.figure(figsize=(10, 6))

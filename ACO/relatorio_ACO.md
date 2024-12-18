@@ -94,4 +94,4 @@ Com um valor alto, o feromonio demora mais para evaporar e favorece a convergenc
 
 Uma menor taxa de deposito de feromonios favorece a exploração.
 
-Uma taxa maior guia as formigas a estados melhores de maneira mais precoce.
+Uma taxa maior guia as formigas a estados melhores de maneira mais
