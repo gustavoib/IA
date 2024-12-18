@@ -18,40 +18,80 @@ Máximo de iterações (MAX_ITERACOES)
 ```
 Vamos variar **alfa** e **beta** e analisar o compotamento do algoritmo.
 
-Os outros parâmetros foram mantidos padrões como:
+Os parâmetros padrões são:
+
 ```
-N_FORMIGAS = 15 (Uma para cada cidade)
+N_FORMIGAS = 15
+ALFA = 1.0
+BETA = 2.0
 RHO = 0.5
 Q = 100
 MAX_ITERACOES = 1000
 ```
 
-#### Sobre os Parâmetros:
-
-1. **ALPHA (peso dos feromônios):**
-   - Valores altos favorecem caminhos explorados anteriormente.
-   - Valores baixos promovem maior exploração.
-
-2. **BETA (peso da visibilidade):**
-   - Valores altos priorizam rotas mais curtas imediatamente.
-   - Valores baixos permitem mais diversidade na busca inicial.
-
-#### Sobre as Fases:
+#### Sobre os esperados para as fases:
 - **Fase inicial:** O custo diminui rapidamente devido à exploração mais ampla do espaço de busca.
 - **Fase intermediária:** A curva apresenta oscilações menores, com caminhos bons acumulando feromônio.
 - **Fase final:** O custo estabiliza, indicando convergência do algoritmo para um caminho (ótimo local ou global).
 
 #### Gráfico de Convergência
 
-> Com alfa = 1.0 e beta = 1.0
-![alt text](analise1.png)
+> Comportamento com os parâmetros padrão
+![alt text](graficos/grafico1.png)
 
-> Com alfa = 1.0 e beta = 5.0
-![alt text](analise2.png)
+#### Variando o número de formigas
 
-> Com alfa = 5.0 e beta = 1.0
-![alt text](analise3.png)
+> N_FORMIGAS = 10
+![alt text](graficos/grafico2.png)
 
-### Conclusão
+> N_FORMIGAS = 100
+![alt text](graficos/grafico3.png)
 
-O ACO demonstrou eficiência na busca de soluções para o problema do TSP. O comportamento de convergência mostra que o algoritmo pode encontrar boas soluções em poucas iterações, desde que os parâmetros estejam bem ajustados. Ajustes nos pesos de feromônio, visibilidade e taxa de evaporação podem ser usados para melhorar ainda mais o desempenho.
+Com 10 formigas, o algoritmo ACO tende a ser mais rápido (computacionalmente falando), mas a exploração é limitada, o que pode resultar em soluções de menor qualidade e uma convergência mais lenta.
+
+Com 100 formigas, a exploração é maior, acelerando a convergência e aumentando a chance de encontrar uma solução melhor, mas com um custo computacional mais alto.
+
+#### Variando o alfa
+
+> ALFA = 0.5
+![alt text](graficos/grafico4.png)
+
+> ALFA = 3.0
+![alt text](graficos/grafico5.png)
+
+Com um valor alfa menor a taxa de exploção aumenta, o que é possível observar no gráfico. No caso particular testado, apesar de diminuir a influência do feromônio, ainda foi possível encontrar o menor tamanho do caminho que algoritmo consegue gerar (com base em várias execuções já feitas).
+
+Aumentando o valor de alfa a exploração reduz, o algoritmo caminha a convergência mais rapidamente, porém encontra um resultado com custo menor que anterior.
+
+#### Variando o beta
+
+> BETA = 0.5
+![alt text](graficos/grafico6.png)
+
+> BETA = 3.0
+![alt text](graficos/grafico7.png)
+
+Diminuindo a influência do beta o algoritmo demora um pouco mais a convergir e gera uma busca com mais diversidade.
+
+Aumentando o valor de beta, a busca explora melhores custos por visualiza os melhores caminhos.
+
+> RHO = 0.1
+![alt text](graficos/grafico8.png)
+
+> RHO = 1.0
+![alt text](graficos/grafico9.png)
+
+Com um valor baixo de rho, o gráfico explora mais custo, mas ainda mantém uma convergencia rápida.
+
+Com um valor alto, o feromonio demora mais para evaporar e favorece a convergencia rápida sem a exploração de mais custos. 
+
+> Q = 10
+![alt text](graficos/grafico10.png)
+
+> Q = 200
+![alt text](graficos/grafico11.png)
+
+
+Uma menor taxa de deposito de feromonios favorece a exploração.
+
+Uma taxa maior guia as formigas a estados melhores de maneira mais precoce.

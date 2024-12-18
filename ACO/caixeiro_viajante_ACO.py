@@ -33,12 +33,12 @@ os parametros ALPHA, BETA, RHO, Q e MAX_ITERACOES são hiperparâmetros do algor
 - MAX_ITERACOES: Número máximo de iterações do algoritmo
 '''
 
-N_FORMIGAS = 100        
-ALPHA = 1.0             
+N_FORMIGAS = 15        
+ALPHA = 1.0            
 BETA = 2.0              
-RHO = 0.5               
-Q = 100                 
-MAX_ITERACOES = 500     
+RHO = 0.5           
+Q = 10               
+MAX_ITERACOES = 1000     
 
 
 def inicializar_aco(distancias):
@@ -53,6 +53,9 @@ def construir_caminho(feromonios, visibilidade, alpha, beta, n_cidades):
     while len(caminho) < n_cidades:
         cidade_atual = caminho[-1]
         probabilidades = calcular_probabilidades(cidade_atual, caminho, feromonios, visibilidade, alpha, beta)
+        if np.sum(probabilidades) == 0 or np.isnan(np.sum(probabilidades)):
+            probabilidades = np.ones(n_cidades)
+            probabilidades[caminho] = 0
         proxima_cidade = random.choices(range(n_cidades), weights=probabilidades, k=1)[0]
         caminho.append(proxima_cidade)
     return caminho
@@ -63,7 +66,10 @@ def calcular_probabilidades(cidade_atual, caminho, feromonios, visibilidade, alp
     for j in range(n_cidades):
         if j not in caminho:
             probabilidades[j] = (feromonios[cidade_atual, j] ** alpha) * (visibilidade[cidade_atual, j] ** beta)
-    return probabilidades / probabilidades.sum()
+    soma_probabilidades = np.sum(probabilidades)
+    if soma_probabilidades == 0:
+        return probabilidades
+    return probabilidades / soma_probabilidades
 
 def calcular_custo(caminho, distancias):
     custo = 0
